@@ -23,10 +23,10 @@ function verifica(event){
   var ok=1;
   var grr = document.getElementById("matricula").value;
   $.get("alunos.xml", function(data){
-    console.log(data);
-    console.log('oi');
-    console.log($(data));
-    var alunos = $($.parseXML(data)).find('ALUNOS_CURSO').children();
+    if ($.parseXML(data))
+      var alunos = $($.parseXML(data)).find('ALUNOS_CURSO').children();
+    else
+      var alunos = $(data).find('ALUNOS_CURSO').children();
     this.qtd = alunos.length;
     $.each(alunos, function (index, value) {
       var $aluno = $(value);
@@ -75,7 +75,10 @@ function carrega_grade(){
   aluno = document.getElementById("matricula").value;
   var cont;
   $.get("alunos.xml", function(data){
-    var alunos = $($.parseXML(data)).find('ALUNOS_CURSO').children();
+    if ($.parseXML(data))
+      var alunos = $($.parseXML(data)).find('ALUNOS_CURSO').children();
+    else
+      var alunos = $(data).find('ALUNOS_CURSO').children();
     cont=0;
     $.each(alunos, function (index, value) {
       var $aluno = $(value);
@@ -110,7 +113,10 @@ var situacao_optativas=[];
 function pinta_materias(){
   aluno = document.getElementById("matricula").value;
   $.get("alunos.xml", function(data){
-    var alunos = $($.parseXML(data)).find('ALUNOS_CURSO').children();
+    if ($.parseXML(data))
+      var alunos = $($.parseXML(data)).find('ALUNOS_CURSO').children();
+    else
+      var alunos = $(data).find('ALUNOS_CURSO').children();
     var cont=0;
     var cont_opt=0;
     optativas=[];
@@ -266,7 +272,10 @@ function carrega_historico(materia){
     alert("Não existem dados para disciplina selecionada.");
   }else{
     $.get("alunos.xml", function(data){
-      var alunos = $($.parseXML(data)).find('ALUNOS_CURSO').children();
+      if ($.parseXML(data))
+        var alunos = $($.parseXML(data)).find('ALUNOS_CURSO').children();
+      else
+        var alunos = $(data).find('ALUNOS_CURSO').children();
       this.qtd = alunos.length;
       var cont=0;
       texto="Histórico "+materia;
@@ -312,7 +321,10 @@ function carrega_situacao(materia){
     alert("Não existem dados para disciplina selecionada.");
   }else{
     $.get("alunos.xml", function(data){
-      var alunos = $($.parseXML(data)).find('ALUNOS_CURSO').children();
+      if ($.parseXML(data))
+        var alunos = $($.parseXML(data)).find('ALUNOS_CURSO').children();
+      else
+        var alunos = $(data).find('ALUNOS_CURSO').children();
       this.qtd = alunos.length;
       var cont=0;
       texto="Histórico "+materia;
