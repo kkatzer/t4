@@ -25,6 +25,7 @@ function verifica(event){
   $.get("alunos.xml", function(data){
     var alunos = $($.parseXML(data)).find('ALUNOS_CURSO').children();
     this.qtd = alunos.length;
+    console.log(alunos);
     $.each(alunos, function (index, value) {
       var $aluno = $(value);
       if ($aluno.find('MATR_ALUNO').text()==grr){
