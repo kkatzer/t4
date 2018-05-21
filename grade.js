@@ -24,6 +24,7 @@ function verifica(event){
   var grr = document.getElementById("matricula").value;
   $.get("alunos.xml", function(data){
     console.log(data);
+    console.log('oi');
     console.log($(data));
     var alunos = $($.parseXML(data)).find('ALUNOS_CURSO').children();
     this.qtd = alunos.length;
