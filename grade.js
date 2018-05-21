@@ -23,7 +23,7 @@ function verifica(event){
   var ok=1;
   var grr = document.getElementById("matricula").value;
   $.get("alunos.xml", function(data){
-    var alunos = $(data).find('ALUNOS_CURSO').children();
+    var alunos = $($.parseXML(data)).find('ALUNOS_CURSO').children();
     this.qtd = alunos.length;
     $.each(alunos, function (index, value) {
       var $aluno = $(value);
@@ -71,7 +71,7 @@ function carrega_grade(){
   aluno = document.getElementById("matricula").value;
   var cont;
   $.get("alunos.xml", function(data){
-    var alunos = $(data).find('ALUNOS_CURSO').children();
+    var alunos = $($.parseXML(data)).find('ALUNOS_CURSO').children();
     cont=0;
     $.each(alunos, function (index, value) {
       var $aluno = $(value);
@@ -106,7 +106,7 @@ var situacao_optativas=[];
 function pinta_materias(){
   aluno = document.getElementById("matricula").value;
   $.get("alunos.xml", function(data){
-    var alunos = $(data).find('ALUNOS_CURSO').children();
+    var alunos = $($.parseXML(data)).find('ALUNOS_CURSO').children();
     var cont=0;
     var cont_opt=0;
     optativas=[];
@@ -187,52 +187,52 @@ function pinta_materias(){
 
         }
         //TODO
-        if (data.ALUNO[i].SITUACAO_ITEM=="12" && data.ALUNO[i].COD_ATIV_CURRIC=="TRT001"){ //trancamento
-          console.log("trancamento: "+data.ALUNO[i].COD_ATIV_CURRIC+" - "+data.ALUNO[i].NOME_ATIV_CURRIC);
+        if ($aluno.find('SITUACAO_ITEM').text()=="12" && $aluno.find('COD_ATIV_CURRIC').text()=="TRT001"){ //trancamento
+          console.log("trancamento: "+$aluno.find('COD_ATIV_CURRIC').text()+" - "+$aluno.find('NOME_ATIV_CURRIC').text());
           var html = document.getElementById("infops").innerHTML;
           if (html==""){
-            html = "obs.: "+data.ALUNO[i].NOME_ALUNO+" trancou o curso em: <br>";
+            html = "obs.: "+$aluno.find('NOME_ALUNO').text()+" trancou o curso em: <br>";
           }
-          html += data.ALUNO[i].PERIODO + " de " + data.ALUNO[i].ANO + "<br>";
+          html += $aluno.find('PERIODO').text() + " de " + $aluno.find('ANO').text() + "<br>";
           document.getElementById("infops").innerHTML=html;
         }
 
-        if (data.ALUNO[i].ID_ESTRUTURA_CUR=="1741" || data.ALUNO[i].ID_ESTRUTURA_CUR=="7406"){ //obrigatorias
-          if (data.ALUNO[i].SITUACAO_ITEM=="11"){ // equivalencia nao tem na grade
-            console.log("equivalencia: "+data.ALUNO[i].COD_ATIV_CURRIC+" - "+data.ALUNO[i].NOME_ATIV_CURRIC);
+        if ($aluno.find('ID_ESTRUTURA_CUR').text()=="1741" || $aluno.find('ID_ESTRUTURA_CUR').text()=="7406"){ //obrigatorias
+          if ($aluno.find('SITUACAO_ITEM').text()=="11"){ // equivalencia nao tem na grade
+            console.log("equivalencia: "+$aluno.find('COD_ATIV_CURRIC').text()+" - "+$aluno.find('NOME_ATIV_CURRIC').text());
           }
           else{
-            document.getElementById(data.ALUNO[i].COD_ATIV_CURRIC).style.backgroundColor = cor;
-            document.getElementById(data.ALUNO[i].COD_ATIV_CURRIC).style.color = "black";
+            document.getElementById($aluno.find('COD_ATIV_CURRIC').text()).style.backgroundColor = cor;
+            document.getElementById($aluno.find('COD_ATIV_CURRIC').text()).style.color = "black";
           }
 
         }
-        else if (data.ALUNO[i].ID_ESTRUTURA_CUR=="1742"){ //tg1
+        else if ($aluno.find('ID_ESTRUTURA_CUR').text()=="1742"){ //tg1
           if (tg1==undefined)
-          tg1 = {nome:data.ALUNO[i].COD_ATIV_CURRIC, historico:"", ultimo:""};
-          var texto =  "Cursado em: " + data.ALUNO[i].PERIODO + " de " + data.ALUNO[i].ANO + "\n";
-          texto = texto +  "Média Final: "+parseFloat(data.ALUNO[i].MEDIA_FINAL).toFixed(2)+ "\n";
-          texto = texto +  "Frequência: "+ parseFloat(data.ALUNO[i].FREQUENCIA).toFixed(2)+ "\n";
-          texto = texto +  "Situação: "+ data.ALUNO[i].SIGLA + "\n\n";
+          tg1 = {nome:$aluno.find('COD_ATIV_CURRIC').text(), historico:"", ultimo:""};
+          var texto =  "Cursado em: " + $aluno.find('PERIODO').text() + " de " + $aluno.find('ANO').text() + "\n";
+          texto = texto +  "Média Final: "+parseFloat($aluno.find('MEDIA_FINAL').text()).toFixed(2)+ "\n";
+          texto = texto +  "Frequência: "+ parseFloat($aluno.find('FREQUENCIA').text()).toFixed(2)+ "\n";
+          texto = texto +  "Situação: "+ $aluno.find('SIGLA').text() + "\n\n";
           tg1.historico += texto;
           tg1.ultimo = texto;
           document.getElementById("TGI").style.backgroundColor = cor;
           document.getElementById("TGI").style.color = "black";
         }
-        else if (data.ALUNO[i].ID_ESTRUTURA_CUR=="1743"){ //tg2
+        else if ($aluno.find('ID_ESTRUTURA_CUR').text()=="1743"){ //tg2
           if (tg2==undefined)
-          tg2 = {nome:data.ALUNO[i].COD_ATIV_CURRIC, historico:"", ultimo:""};
-          var texto =  "Cursado em: " + data.ALUNO[i].PERIODO + " de " + data.ALUNO[i].ANO + "\n";
-          texto = texto +  "Média Final: "+parseFloat(data.ALUNO[i].MEDIA_FINAL).toFixed(2)+ "\n";
-          texto = texto +  "Frequência: "+ parseFloat(data.ALUNO[i].FREQUENCIA).toFixed(2)+ "\n";
-          texto = texto +  "Situação: "+ data.ALUNO[i].SIGLA + "\n\n";
+          tg2 = {nome:$aluno.find('COD_ATIV_CURRIC').text(), historico:"", ultimo:""};
+          var texto =  "Cursado em: " + $aluno.find('PERIODO').text() + " de " + $aluno.find('ANO').text() + "\n";
+          texto = texto +  "Média Final: "+parseFloat($aluno.find('MEDIA_FINAL').text()).toFixed(2)+ "\n";
+          texto = texto +  "Frequência: "+ parseFloat($aluno.find('FREQUENCIA').text()).toFixed(2)+ "\n";
+          texto = texto +  "Situação: "+ $aluno.find('SIGLA').text() + "\n\n";
           tg2.historico += texto;
           tg2.ultimo = texto;
           document.getElementById("TGII").style.backgroundColor = cor;
           document.getElementById("TGII").style.color = "black";
         }
       }
-    }
+    });
     for (i=0; i<optativas.length; i++){
       document.getElementById("OPT"+(i+1)).style.backgroundColor = situacao_optativas[i];
       document.getElementById("OPT"+(i+1)).style.color = "black";
@@ -261,22 +261,24 @@ function carrega_historico(materia){
     else
     alert("Não existem dados para disciplina selecionada.");
   }else{
-    $.getJSON( "http://www.inf.ufpr.br/bmuller/CI320/7/alunos.json", function(data){
-      this.qtd = data.ALUNO.length;
+    $.get("alunos.xml", function(data){
+      var alunos = $($.parseXML(data)).find('ALUNOS_CURSO').children();
+      this.qtd = alunos.length;
       var cont=0;
       texto="Histórico "+materia;
-      for (i = 0; i < this.qtd; i++){
-        if (data.ALUNO[i].MATR_ALUNO==aluno && data.ALUNO[i].COD_ATIV_CURRIC==materia ){
+      $.each(alunos, function (index, value) {
+        var $aluno = $(value);
+        if ($aluno.find('MATR_ALUNO').text()==aluno && $aluno.find('COD_ATIV_CURRIC').text()==materia ){
           if (cont==0){
-            texto = texto + " - "+data.ALUNO[i].NOME_ATIV_CURRIC+":\n\n";
+            texto = texto + " - "+$aluno.find('NOME_ATIV_CURRIC').text()+":\n\n";
           }
-          texto = texto +  "Cursado em: " + data.ALUNO[i].PERIODO + " de " + data.ALUNO[i].ANO + "\n";
-          texto = texto +  "Média Final: "+parseFloat(data.ALUNO[i].MEDIA_FINAL).toFixed(2)+ "\n";
-          texto = texto +  "Frequência: "+ parseFloat(data.ALUNO[i].FREQUENCIA).toFixed(2)+ "\n";
-          texto = texto +  "Situação: "+ data.ALUNO[i].SIGLA + "\n\n";
+          texto = texto +  "Cursado em: " + $aluno.find('PERIODO').text() + " de " + $aluno.find('ANO').text() + "\n";
+          texto = texto +  "Média Final: "+parseFloat($aluno.find('MEDIA_FINAL').text()).toFixed(2)+ "\n";
+          texto = texto +  "Frequência: "+ parseFloat($aluno.find('FREQUENCIA').text()).toFixed(2)+ "\n";
+          texto = texto +  "Situação: "+ $aluno.find('SIGLA').text() + "\n\n";
           cont=1;
         }
-      }
+      });
       if (texto!="Histórico "+materia)
       alert(texto);
       else
@@ -305,19 +307,24 @@ function carrega_situacao(materia){
     else
     alert("Não existem dados para disciplina selecionada.");
   }else{
-    $.getJSON( "http://www.inf.ufpr.br/bmuller/CI320/7/alunos.json", function(data){
-      this.qtd = data.ALUNO.length;
+    $.get("alunos.xml", function(data){
+      var alunos = $($.parseXML(data)).find('ALUNOS_CURSO').children();
+      this.qtd = alunos.length;
       var cont=0;
-      for (i = 0; i < this.qtd; i++){
-        if (data.ALUNO[i].MATR_ALUNO==aluno && data.ALUNO[i].COD_ATIV_CURRIC==materia){
-          texto = "Situação "+materia+" - "+data.ALUNO[i].NOME_ATIV_CURRIC+":\n\n";
-          texto = texto +  "Cursado em: " + data.ALUNO[i].PERIODO + " de " + data.ALUNO[i].ANO + "\n";
-          texto = texto +  "Média Final: "+parseFloat(data.ALUNO[i].MEDIA_FINAL).toFixed(2)+ "\n";
-          texto = texto +  "Frequência: "+ parseFloat(data.ALUNO[i].FREQUENCIA).toFixed(2)+ "\n";
-          texto = texto +  "Situação: "+ data.ALUNO[i].SIGLA + "\n\n";
+      texto="Histórico "+materia;
+      $.each(alunos, function (index, value) {
+        var $aluno = $(value);
+        if ($aluno.find('MATR_ALUNO').text()==aluno && $aluno.find('COD_ATIV_CURRIC').text()==materia ){
+          if (cont==0){
+            texto = texto + " - "+$aluno.find('NOME_ATIV_CURRIC').text()+":\n\n";
+          }
+          texto = texto +  "Cursado em: " + $aluno.find('PERIODO').text() + " de " + $aluno.find('ANO').text() + "\n";
+          texto = texto +  "Média Final: "+parseFloat($aluno.find('MEDIA_FINAL').text()).toFixed(2)+ "\n";
+          texto = texto +  "Frequência: "+ parseFloat($aluno.find('FREQUENCIA').text()).toFixed(2)+ "\n";
+          texto = texto +  "Situação: "+ $aluno.find('SIGLA').text() + "\n\n";
           cont=1;
         }
-      }
+      });
       if (texto!=undefined)
       alert(texto);
       else
