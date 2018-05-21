@@ -23,9 +23,9 @@ function verifica(event){
   var ok=1;
   var grr = document.getElementById("matricula").value;
   $.get("alunos.xml", function(data){
+    console.log(data);
     var alunos = $($.parseXML(data)).find('ALUNOS_CURSO').children();
     this.qtd = alunos.length;
-    console.log(alunos);
     $.each(alunos, function (index, value) {
       var $aluno = $(value);
       if ($aluno.find('MATR_ALUNO').text()==grr){
