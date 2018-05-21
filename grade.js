@@ -56,13 +56,14 @@ function verifica(event){
 
 function clicou(event){
   var e = event || window.event;
+  console.log(e.which);
   switch (e.which) {
     case 1://bt esquerdo
-    carrega_situacao(event.target.id);
-    break;
+      carrega_situacao(event.target.id);
+      break;
     case 3://bt direito
-    carrega_historico(event.target.id);
-    break;
+      carrega_historico(event.target.id);
+      break;
   }
 }
 
@@ -120,27 +121,27 @@ function pinta_materias(){
         switch ($aluno.find('SITUACAO_ITEM').text()){
           case "1" :
           case "4" : //aprovado
-          cor=" #89C35C";
-          break;
+            cor=" #89C35C";
+            break;
           case "2" :
           case "3" :
           case "9" ://reprovado
-          cor="#DC381F";
-          break;
+            cor="#DC381F";
+            break;
           case "5": //cancelado
-          cor= "#893BFF";
-          break;
+            cor= "#893BFF";
+            break;
           case "10": //matricula
-          cor="#79BAEC";
-          break;
+            cor="#79BAEC";
+            break;
           case "11": //equivalencia
-          cor="#FDD017";
-          break;
+            cor="#FDD017";
+            break;
           case "12": //trancamento
-          cor= "#F9B7FF";
-          break;
+            cor= "#F9B7FF";
+            break;
           default: //trancamento administrativo
-          break;
+            break;
         }
 
         if ($aluno.find('ID_ESTRUTURA_CUR').text()=="1744") { //eh optativa
@@ -158,7 +159,7 @@ function pinta_materias(){
             if (optativas.length<tam_opt){ //adc
               optativas.push($aluno.find('COD_ATIV_CURRIC').text());
               var texto = "Optativa "+$aluno.find('COD_ATIV_CURRIC').text()+" - "+$aluno.find('NOME_ATIV_CURRIC').text()+"\n\n";
-              var texto =  "Cursado em: " + $aluno.find('PERIODO').text() + " de " + $aluno.find('ANO').text() + "\n";
+              texto = texto + "Cursado em: " + $aluno.find('PERIODO').text() + " de " + $aluno.find('ANO').text() + "\n";
               texto = texto +  "Média Final: "+parseFloat($aluno.find('MEDIA_FINAL').text()).toFixed(2)+ "\n";
               texto = texto +  "Frequência: "+ parseFloat($aluno.find('FREQUENCIA').text()).toFixed(2)+ "\n";
               texto = texto +  "Situação: "+ $aluno.find('SIGLA').text() + "\n\n";
@@ -170,7 +171,7 @@ function pinta_materias(){
               for (ind = 0; ind < qtd; ind++){
                 if (situacao_optativas[ind]!="green"){
                   var texto = "Optativa "+$aluno.find('COD_ATIV_CURRIC').text()+" - "+$aluno.find('NOME_ATIV_CURRIC').text()+"\n\n";
-                  var texto =  "Cursado em: " + $aluno.find('PERIODO').text() + " de " + $aluno.find('ANO').text() + "\n";
+                  texto = texto +  "Cursado em: " + $aluno.find('PERIODO').text() + " de " + $aluno.find('ANO').text() + "\n";
                   texto = texto +  "Média Final: "+parseFloat($aluno.find('MEDIA_FINAL').text()).toFixed(2)+ "\n";
                   texto = texto +  "Frequência: "+ parseFloat($aluno.find('FREQUENCIA').text()).toFixed(2)+ "\n";
                   texto = texto +  "Situação: "+ $aluno.find('SIGLA').text() + "\n\n";
@@ -178,7 +179,7 @@ function pinta_materias(){
                   desc_optativas[ind] = texto;
                   ultima_optativas[ind] = texto;
                   situacao_optativas[ind] = cor;
-                  return false;
+                  break;
                 }
               }
             }
@@ -186,7 +187,7 @@ function pinta_materias(){
           }
 
         }
-        //TODO
+
         if ($aluno.find('SITUACAO_ITEM').text()=="12" && $aluno.find('COD_ATIV_CURRIC').text()=="TRT001"){ //trancamento
           console.log("trancamento: "+$aluno.find('COD_ATIV_CURRIC').text()+" - "+$aluno.find('NOME_ATIV_CURRIC').text());
           var html = document.getElementById("infops").innerHTML;
@@ -209,7 +210,7 @@ function pinta_materias(){
         }
         else if ($aluno.find('ID_ESTRUTURA_CUR').text()=="1742"){ //tg1
           if (tg1==undefined)
-          tg1 = {nome:$aluno.find('COD_ATIV_CURRIC').text(), historico:"", ultimo:""};
+            tg1 = {nome:$aluno.find('COD_ATIV_CURRIC').text(), historico:"", ultimo:""};
           var texto =  "Cursado em: " + $aluno.find('PERIODO').text() + " de " + $aluno.find('ANO').text() + "\n";
           texto = texto +  "Média Final: "+parseFloat($aluno.find('MEDIA_FINAL').text()).toFixed(2)+ "\n";
           texto = texto +  "Frequência: "+ parseFloat($aluno.find('FREQUENCIA').text()).toFixed(2)+ "\n";
@@ -221,7 +222,7 @@ function pinta_materias(){
         }
         else if ($aluno.find('ID_ESTRUTURA_CUR').text()=="1743"){ //tg2
           if (tg2==undefined)
-          tg2 = {nome:$aluno.find('COD_ATIV_CURRIC').text(), historico:"", ultimo:""};
+            tg2 = {nome:$aluno.find('COD_ATIV_CURRIC').text(), historico:"", ultimo:""};
           var texto =  "Cursado em: " + $aluno.find('PERIODO').text() + " de " + $aluno.find('ANO').text() + "\n";
           texto = texto +  "Média Final: "+parseFloat($aluno.find('MEDIA_FINAL').text()).toFixed(2)+ "\n";
           texto = texto +  "Frequência: "+ parseFloat($aluno.find('FREQUENCIA').text()).toFixed(2)+ "\n";
@@ -315,9 +316,7 @@ function carrega_situacao(materia){
       $.each(alunos, function (index, value) {
         var $aluno = $(value);
         if ($aluno.find('MATR_ALUNO').text()==aluno && $aluno.find('COD_ATIV_CURRIC').text()==materia ){
-          if (cont==0){
-            texto = texto + " - "+$aluno.find('NOME_ATIV_CURRIC').text()+":\n\n";
-          }
+          texto = "Situação "+materia+" - "+$aluno.find('NOME_ATIV_CURRIC').text()+":\n\n";
           texto = texto +  "Cursado em: " + $aluno.find('PERIODO').text() + " de " + $aluno.find('ANO').text() + "\n";
           texto = texto +  "Média Final: "+parseFloat($aluno.find('MEDIA_FINAL').text()).toFixed(2)+ "\n";
           texto = texto +  "Frequência: "+ parseFloat($aluno.find('FREQUENCIA').text()).toFixed(2)+ "\n";
